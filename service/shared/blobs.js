@@ -6,9 +6,11 @@ var qs = require('querystring');
 var util = require('util');
 
 var config = {
-	accountName : "azmob",
-	accountKey : "jup/1UBhKhYCAZu7zyCO6okigetuCco7OGc9ea31kU+nMImVk3Dk7GKh9xt5GMVBdYW+VYAi9z06KvOIvJhnlQ==",
-	imageContainer : "events"
+	storage : {
+		accountName : "azmob",
+		accountKey : "jup/1UBhKhYCAZu7zyCO6okigetuCco7OGc9ea31kU+nMImVk3Dk7GKh9xt5GMVBdYW+VYAi9z06KvOIvJhnlQ==",
+		imageContainer : "events"
+	}
 };
 
 var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
