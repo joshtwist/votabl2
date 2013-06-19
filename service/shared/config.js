@@ -1,0 +1,4 @@
+exports.settings = {
+	storagekey = "",
+	storagethingy = "",
+}
