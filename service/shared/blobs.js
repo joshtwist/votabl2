@@ -1,6 +1,6 @@
 var azure = require('azure');
 var qs = require('querystring');
-var config = require('./config.js');
+var config = require('.\\config.js');
 var util = require('util');
 
 var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
