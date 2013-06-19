@@ -1,7 +1,7 @@
 var azure = require('azure');
 var qs = require('querystring');
 console.log('a');
-var config = require('config.js');
+var config = require('./config.js');
 console.log('b');
 var util = require('util');
 
