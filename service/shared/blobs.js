@@ -1,17 +1,9 @@
 var azure = require('azure');
 var qs = require('querystring');
-//console.log('a');
-//var config = require('./config.js');
-//console.log('b');
+console.log('a');
+var config = require('./config.js');
+console.log('b');
 var util = require('util');
-
-var config = {
-	storage : {
-		accountName : "azmob",
-		accountKey : "jup/1UBhKhYCAZu7zyCO6okigetuCco7OGc9ea31kU+nMImVk3Dk7GKh9xt5GMVBdYW+VYAi9z06KvOIvJhnlQ==",
-		imageContainer : "events"
-	}
-};
 
 var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
 
