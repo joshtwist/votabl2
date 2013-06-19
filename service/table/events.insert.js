@@ -4,7 +4,7 @@ require = function(path) {
 	catch (e) { return _r('../../app_data/config/scripts/table/' + path); }
 }
 
-var blobs = require('../blobs.js');
+var blobs = require('../shared/blobs.js');
 
 function insert(item, user, request) {
     // todo - create an image URL for blob storage
