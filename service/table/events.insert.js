@@ -8,6 +8,10 @@ var blobs = require('../shared/blobs.js');
 
 function insert(item, user, request) {
     // todo - create an image URL for blob storage
-    console.log(blobs);
-    request.execute();
+    request.execute({
+    	success : function(){
+        	item.imageUrl = blobs.generateUrl(item.id);
+            request.respond();
+        }
+    });
 }
