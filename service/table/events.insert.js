@@ -7,10 +7,12 @@ require = function(path) {
 var blobs = require('../shared/blobs.js');
 
 function insert(item, user, request) {
+	var sasUrl = blobs.generateUrl(item.id);
+    item.imageUrl = sasUrl.substring(0, sasUrl.indexOf('?'));
     // todo - create an image URL for blob storage
     request.execute({
     	success : function(){
-        	item.imageUrl = blobs.generateUrl(item.id);
+        	item.imageUrl = sasUrl;
             request.respond();
         }
     });
