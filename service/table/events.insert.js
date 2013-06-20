@@ -14,7 +14,7 @@ function insert(item, user, request) {
     item.imageUrl = imgSasUrl.substring(0, imgSasUrl.indexOf('?'));
     request.execute({
         success : function(){
-            item.imageUrl = imageSasUrl
+            item.imageUrl = imageSasUrl;
             request.respond();
         }
     });
