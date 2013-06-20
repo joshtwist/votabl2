@@ -5,6 +5,7 @@ var require = function(path) {
 }
 
 var blobs = require('../shared/blobs.js');
+var uuid = require('../shared/node_modules/uuid');
 
 function insert(item, user, request) {
     // todo - create an image URL for blob storage
