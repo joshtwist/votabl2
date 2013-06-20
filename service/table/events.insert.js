@@ -5,7 +5,6 @@ var require = function(path) {
 }
 
 var blobs = require('../shared/blobs.js');
-var cryto = require('crypto');
 
 function insert(item, user, request) {
 	var sasUrl = blobs.generateUrl(item.id);
