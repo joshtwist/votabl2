@@ -9,9 +9,12 @@ var uuid = require('../shared/node_modules/uuid');
 
 function insert(item, user, request) {
     // todo - create an image URL for blob storage
+    var imgId = uuid.unparse(uuid.v4());
+    var imgSasUrl = blobs.generateUrl(imgId);
+    item.imageUrl = imgSasUrl.substring(0, imgSasUrl.indexOf('?'));
     request.execute({
         success : function(){
-            item.imageUrl = blobs.generateUrl(item.id);
+            item.imageUrl = imgSasUrl;
             request.respond();
         }
     });
