@@ -1,14 +1,12 @@
 var azure = require('azure');
 var qs = require('querystring');
-console.log('a');
 var config = require('./config.js');
-console.log('b');
 var util = require('util');
 
 var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
 
 function generateUrl(itemId) {
-	var resource = util.format('%s/%s/%s', host, config.storage.imageContainer, itemId);
+	var resource = util.format('/%s/%s', config.storage.imageContainer, itemId);
 
 	var blobService = azure.createBlobService(config.storage.accountName, config.storage.accountKey, host);
 
