@@ -23,7 +23,7 @@ function generateUrl(itemId) {
 			azure.Constants.BlobConstants.ResourceTypes.BLOB,
 			policy);
 
-	return util.format('http://%s?%s', resource, sas);
+	return util.format('http://%s%s?%s', host, resource, sas);
 }
 
 function getSAS(accountName, accountKey, path, resourceType, sharedAccessPolicy) {                         
