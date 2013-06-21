@@ -4,5 +4,5 @@ exports.post = function(request, response) {
     //   var push = request.service.push;
     console.log(request.body);
     console.log(request.data);
-    response.send(200, "Hello World");
+    response.send(200, [{ a : 1}, { b : 2} ]);
 };
