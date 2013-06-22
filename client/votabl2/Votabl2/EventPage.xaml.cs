@@ -65,7 +65,7 @@ namespace Votabl2
         /// session.  The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            MonitorViewModel vm = (MonitorViewModel) e.NavigationParameter;
+            EventViewModel vm = (EventViewModel) e.NavigationParameter;
             vm.Load();
             this.DataContext = vm;
         }

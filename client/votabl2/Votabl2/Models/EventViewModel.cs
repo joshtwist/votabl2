@@ -4,37 +4,43 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Votabl2.Common;
 
 namespace Votabl2.Models
 {
-    public class MonitorViewModel : ViewModel
+    public class EventViewModel : ViewModel
     {
         private IMobileServiceTable<Votabl> _votablsTable;
 
-        public MonitorViewModel()
+        public EventViewModel()
         {
+            _loadVotesCommand = new DelegateCommand(LoadVotes);
             _newItem = new NewItemViewModel(Create);
             _votablsTable = MainViewModel.Client.GetTable<Votabl>();
         }
 
         public async void Load()
         {
-            //dynamic j = new JObject();
-            //j.eventId = Event.Id;
-            //var result = await MainViewModel.Client.InvokeApiAsync("monitorEvent", (JObject)j);
-            //foreach (dynamic item in result)
-            //{
-            //    _details.Add(item);
-            //}
-
             this.Details.Clear();
 
             var votabls = await _votablsTable.Where(v => v.EventId == Event.Id).ToEnumerableAsync();
 
             this.Details.AddRange(votabls);
+        }
+
+        public async void LoadVotes()
+        {
+            var parameters = new Dictionary<string, string>() { { "eventShareId" , Event.EventShareId }};
+            dynamic result = await MainViewModel.Client.InvokeApiAsync("eventCount", HttpMethod.Post, parameters); 
+            IEnumerable<dynamic> arr = (IEnumerable<dynamic>) result;
+            foreach (var votabl in this.Details)
+            {
+                var votes = arr.SingleOrDefault(c => c.votablId == votabl.Id);
+                votabl.Count = votes == null ? 0 : votes.count;
+            }
         }
 
         private async void Create()
@@ -61,9 +67,9 @@ namespace Votabl2.Models
             }
         }
 
-        private readonly ObservableCollection<dynamic> _details = new ObservableCollection<dynamic>();
-
-        public ObservableCollection<dynamic> Details
+        private readonly ObservableCollection<Votabl> _details = new ObservableCollection<Votabl>();
+        
+        public ObservableCollection<Votabl> Details
         {
             get { return _details; }
         }
@@ -76,6 +82,17 @@ namespace Votabl2.Models
             set
             {
                 SetValue(ref _newItem, value, "NewItem");
+            }
+        }
+
+        private DelegateCommand _loadVotesCommand;
+
+        public DelegateCommand LoadVotesCommand
+        {
+            get { return _loadVotesCommand; }
+            set
+            {
+                SetValue(ref _loadVotesCommand, value, "LoadVotesCommand");
             }
         }
 

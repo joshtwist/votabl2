@@ -93,6 +93,11 @@
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
+                <AppBarButton Style="{StaticResource AppBarButtonStyle}"
+                    AutomationProperties.Name="Count"
+                    Command="{Binding LoadVotesCommand}">
+                    &#xE1EF;
+                </AppBarButton>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>

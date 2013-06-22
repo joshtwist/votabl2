@@ -123,7 +123,7 @@
     <Compile Include="Models\BlobHelper.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\MainViewModel.cs" />
-    <Compile Include="Models\MonitorViewModel.cs" />
+    <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\NewItemViewModel.cs" />
     <Compile Include="Models\Votabl.cs" />
     <Compile Include="Models\Vote.cs" />

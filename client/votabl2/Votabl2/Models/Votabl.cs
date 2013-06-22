@@ -4,11 +4,12 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Votabl2.Common;
 
 namespace Votabl2.Models
 {
     [DataContract(Name = "votabls")]
-    public class Votabl
+    public class Votabl : ViewModel
     {
         public Votabl()
         {
@@ -26,5 +27,16 @@ namespace Votabl2.Models
 
         [DataMember(Name = "imageUrl")]
         public string ImageUrl { get; set; }
+
+        private int _count;
+
+        public int Count
+        {
+            get { return _count; }
+            set
+            {
+                SetValue(ref _count, value, "Count");
+            }
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace Votabl2.Models
             _newItem = new NewItemViewModel(Insert);
         }
 
-        public Action<MonitorViewModel> NavigateAction { get; set; }
+        public Action<EventViewModel> NavigateAction { get; set; }
 
         public async void Login()
         {
@@ -59,7 +59,7 @@ namespace Votabl2.Models
 
         private void Choose(Event evt) 
         {
-            MonitorViewModel mvm = new MonitorViewModel();
+            EventViewModel mvm = new EventViewModel();
             mvm.Event = evt;
             NavigateAction(mvm);
         }
