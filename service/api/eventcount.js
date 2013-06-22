@@ -1,7 +1,8 @@
 exports.post = function(request, response) {
-    // Use "request.service" to access features of your mobile service, e.g.:
-    //   var tables = request.service.tables;
-    //   var push = request.service.push;
-
-    response.send(200, "Hello World");
+    var sql = "SELECT COUNT(id) AS 'total', votablId FROM votabl2.votes WHERE eventShareId = ? GROUP BY votablId"
+    request.service.mssql.query(query, [request.parameters.eventId], {
+        success: function (results) {
+            response.send(200, results);
+        }
+    });
 };

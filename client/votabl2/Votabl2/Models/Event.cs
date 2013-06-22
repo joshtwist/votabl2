@@ -10,6 +10,12 @@ namespace Votabl2.Models
     [DataContract(Name="events")]
     public class Event
     {
+        public Event()
+        {
+            ImageUrl = string.Empty;
+            EventShareId = string.Empty;
+        }
+
         [DataMember]
         public int Id { get; set; }
 
@@ -18,5 +24,8 @@ namespace Votabl2.Models
         
         [DataMember(Name = "imageUrl")]
         public string ImageUrl { get; set; }
+
+        [DataMember(Name = "eventShareId")]
+        public string EventShareId { get; set; }
     }
 }

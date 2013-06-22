@@ -13,6 +13,9 @@ namespace Votabl2.Models
         [DataMember]
         public int Id { get; set; }
 
+        [DataMember(Name = "eventShareId")]
+        public string EventShareId { get; set; }
+
         [DataMember(Name = "votablId")]
         public int VotablId { get; set; }
     }

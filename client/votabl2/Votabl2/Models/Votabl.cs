@@ -10,6 +10,11 @@ namespace Votabl2.Models
     [DataContract(Name = "votabls")]
     public class Votabl
     {
+        public Votabl()
+        {
+            ImageUrl = string.Empty;
+        }
+
         [DataMember]
         public int Id { get; set; }
 
