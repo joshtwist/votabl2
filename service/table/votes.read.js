@@ -9,14 +9,14 @@ var key = "GgIoe4FneNtKK+WkKQq+ropj7mB98XYUNZnt5fV+7V0=";
 
 function read(query, user, request) {
 	var expiry = new Date();
-	expiry.setSeconds(expiry.getSeconds() + 7); // insert is valid 7 seconds from generation
+	expiry.setSeconds(expiry.getSeconds() + 10); // insert is valid 10 seconds from generation
 	var x = expiry.getTime().toString();
 	var token = x + "." + signature(x);
-	request.respond(200, [{ token: x }]);
+	request.respond(200, [{ token: token }]);
 }
 
 function signature(input) {
 	var key = crypto.createHash('sha256').update(key).digest('binary');
-	var str = crypto.createHmac('sha256', key).update(input).digest('base64');
+	var str = crypto.createHmac('sha256', key).update(input.toString()).digest('base64');
 	return str;
 }
