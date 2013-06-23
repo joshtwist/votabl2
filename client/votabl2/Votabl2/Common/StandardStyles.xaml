@@ -30,6 +30,8 @@
 
     <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#1BA1E2" />
 
+    <x:String x:Key="ProgressBarIndeterminateForegroundThemeBrush">#FFF</x:String>
+    
     <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
 
     <!-- RichTextBlock styles -->
