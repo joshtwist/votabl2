@@ -3,6 +3,7 @@
 // flood the system with votes using a tool like fiddler. It is completely fallible but hopefully
 // buys enough time to get through the live streaming demo OK. To correctly implement throttling, 
 // you'd have users authenticate - but that would have slowed things up too much! Have fun :)
+var crypto = require('crypto');
 
 var key = "GgIoe4FneNtKK+WkKQq+ropj7mB98XYUNZnt5fV+7V0=";
 
@@ -11,7 +12,7 @@ function read(query, user, request) {
 	expiry.setSeconds(expiry.getSeconds() + 7); // insert is valid 7 seconds from generation
 	var x = expiry.getTime().toString();
 	var token = x + "." + signature(x);
-	request.respond(200, [{ token: x}]);
+	request.respond(200, [{ token: x }]);
 }
 
 function signature(input) {
