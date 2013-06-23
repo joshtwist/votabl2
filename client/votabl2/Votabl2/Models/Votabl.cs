@@ -20,12 +20,12 @@ namespace Votabl2.Models
         public int Id { get; set; }
 
         [DataMember]
-        public int EventId { get; set; }
+        public string EventShareId{ get; set; }
 
-        [DataMember(Name = "name")]
+        [DataMember]
         public string Name { get; set; }
 
-        [DataMember(Name = "imageUrl")]
+        [DataMember]
         public string ImageUrl { get; set; }
 
         private int _count;

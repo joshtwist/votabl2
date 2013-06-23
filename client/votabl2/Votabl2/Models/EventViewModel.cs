@@ -26,7 +26,7 @@ namespace Votabl2.Models
         {
             this.Details.Clear();
 
-            var votabls = await _votablsTable.Where(v => v.EventId == Event.Id).ToEnumerableAsync();
+            var votabls = await _votablsTable.Where(v => v.EventShareId == Event.EventShareId).ToEnumerableAsync();
 
             this.Details.AddRange(votabls);
         }
@@ -45,7 +45,7 @@ namespace Votabl2.Models
 
         private async void Create()
         {
-            var votabl = new Votabl { Name = NewItem.Name, ImageUrl = "", EventId = Event.Id };
+            var votabl = new Votabl { Name = NewItem.Name, ImageUrl = "", EventShareId = Event.EventShareId };
 
             await _votablsTable.InsertAsync(votabl);
 

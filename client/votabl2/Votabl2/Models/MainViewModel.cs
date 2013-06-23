@@ -17,23 +17,28 @@ namespace Votabl2.Models
 {
     public class MainViewModel : ViewModel
     {
-        public static MobileServiceClient Client = new MobileServiceClient(
-            "https://votabl2.azure-mobile.net/",
-            "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
+        public static MobileServiceClient Client;
 
         private static MainViewModel _instance;
 
         private IMobileServiceTable<Event> _eventsTable;
         private IMobileServiceTable<Votabl> _votablsTable;
-        private IMobileServiceTable<Vote> _votesTable;
 
         private StorageFile _newImageFile;
+
+        static MainViewModel()
+        {
+            Client = new MobileServiceClient(
+            "https://votabl2.azure-mobile.net/",
+            "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
+
+            Client.SerializerSettings.CamelCasePropertyNames = true;
+        }
 
         private MainViewModel()
         {
             _eventsTable = Client.GetTable<Event>();
             _votablsTable = Client.GetTable<Votabl>();
-            _votesTable = Client.GetTable<Vote>();
 
             _insertCommand = new DelegateCommand(Insert);
             _refreshCommand = new DelegateCommand(Load);

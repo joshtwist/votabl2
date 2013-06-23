@@ -5,6 +5,7 @@ exports.get = function(request, response) {
    			results.forEach(function(r) {
    				delete r.id;
    			});
+   			console.log(results);
    			response.send(200, results);
    		}
    	});

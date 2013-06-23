@@ -8,13 +8,13 @@
         <!--[if lte IE 9]><link rel='stylesheet' href='style-old-ie.css' /><![endif]-->
         <!--[if lte IE 8]><script>location.href = 'unsupported-browser.html';</script><![endif]-->
     </head>
-    <body class='loading' ng-controller="VoteControllers">
+    <body class='loading' ng-controller="VoteController">
         <div id='container'>
             <h1>votabl2</h1>
             <div id='panes'>
                 <ul id='choices'>
                     <li ng-repeat="choice in choices" ng-click="vote(choice)">
-                        <img ng-src="choice.imageUrl" />
+                        <img ng-src="{{choice.imageUrl}}" />
                         <div>
                             <h2>{{choice.name}}</h2>
                             <p>click to vote!</p>
@@ -51,9 +51,9 @@
                 "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
 
             function VoteController($scope, $location) {
-                var eventShareId = $location.query.eventShareId;
+                var eventShareId = $location.search('eventShareId');
 
-                if (!eventShareId)
+                if (!eventShareId || eventShareId.length < 10)
                 {
                     alert('invalid event');
                     return;
@@ -66,7 +66,7 @@
                     showTextPane({ incoming: "#voting", outgoing: "#choices" });
                     client.getTable('votes').insert({ 
                         votablId : choice.votablId,
-                        eventShareId : $location.query.eventShareId }).then(function(){
+                        eventShareId : eventShareId }).then(function(){
 
                         }, function(error) {
                             var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
@@ -75,57 +75,24 @@
                         })
                 };
 
-                client.invokeApi('loadChoices', 'get', { eventShareId : $location.query.eventShareId }).then(function(results) {
+                client.invokeApi('loadChoices',{ 
+                    method: 'get',
+
+                    eventShareId : eventShareId }).then(function(results) {
                         $scope.choices = results;
                         $scope.$apply();
+                        $(document.body).removeClass("loading");
                 }, function (err) {
                     var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
                     alert(message);
                 });
             }
 
-            $(function () {
-
-                $(document.body).on("click", "#choices:not(.has-selected) li", function () {
-                    var choiceId = parseInt($(this).attr("data-choice-id"));
-
-                    // Perform animation phase 1 (3d rotate and fade)
-                    $("#voted-for-text").text($("h2", this).text().toLowerCase());
-                    $(this).addClass("selected");
-                    $("#choices").addClass("has-selected");
-
-                    // After delay, perform phase 2 (slide out and show in-progress text)
-                    window.setTimeout(function () {
-                        showTextPane({ incoming: "#voting", outgoing: "#choices" });
-
-                        // Issue vote 
-                        var votePromise = _submitVote(choiceId);
-
-                        // After 2 seconds, or whenever vote request completes (whichever
-                        // takes longest), switch to "all done" display
-                        window.setTimeout(function () {
-                            votePromise.then(function () {
-                                showTextPane({ incoming: "#vote-succeeded", outgoing: "#voting" });
-                            }, function (err) {
-                                var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
-                                $("#failure-reason").text(message);
-                                showTextPane({ incoming: "#vote-failed", outgoing: "#voting" });
-                            });
-                        }, 2000);
-                    }, 400);
-                });
-
-                $("#try-again").click(function () { location.reload(); });
-
-                function showTextPane(options) {
-                    $(options.outgoing).addClass("off-screen");
-                    $(options.incoming).show().offset();
-                    $(options.incoming).removeClass("off-screen");
-                }
-
-                var items = null;
-
-            });
+            function showTextPane(options) {
+                $(options.outgoing).addClass("off-screen");
+                $(options.incoming).show().offset();
+                $(options.incoming).removeClass("off-screen");
+            }
         </script>
     </body>
 </html>
