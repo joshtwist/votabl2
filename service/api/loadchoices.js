@@ -1,7 +1,11 @@
-exports.post = function(request, response) {
-    // Use "request.service" to access features of your mobile service, e.g.:
-    //   var tables = request.service.tables;
-    //   var push = request.service.push;
-
-    response.send(200, "Hello World");
+exports.get = function(request, response) {
+   	var votabls = request.service.tables.getTable('votabls');
+   	votabls.where({ eventShareId: request.query.eventShareId }).read({
+   		success: function(results) {
+   			results.forEach(function(r) {
+   				delete r.id;
+   			});
+   			response.send(200, results);
+   		}
+   	});
 };
