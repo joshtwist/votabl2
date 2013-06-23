@@ -17,6 +17,7 @@ function read(query, user, request) {
 
 function signature(input) {
 	var key = crypto.createHash('sha256').update(key).digest('binary');
-	var str = crypto.createHmac('sha256', key).update(input.toString()).digest('base64');
+	console.log(input, key);
+	var str = crypto.createHmac('sha256', key).update(input).digest('base64');
 	return str;
 }
