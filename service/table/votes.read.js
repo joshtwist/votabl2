@@ -9,7 +9,7 @@ var signatureKey = "GgIoe4FneNtKK+WkKQq+ropj7mB98XYUNZnt5fV+7V0=";
 
 function read(query, user, request) {
 	var expiry = new Date();
-	expiry.setSeconds(expiry.getSeconds() + 10); // insert is valid 10 seconds from generation
+	expiry.setSeconds(expiry.getSeconds() + 5); // insert is valid 5 seconds from generation
 	var x = expiry.getTime().toString();
 	var token = x + "." + signature(x);
 	request.respond(200, [{ token: token }]);
