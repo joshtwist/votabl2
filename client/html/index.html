@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <meta http-equiv='content-type' content='text/html; charset=UTF-8' />
+        <meta name='viewport' content='width=device-width' />
+        <title>votabl2</title>
+        <link rel='stylesheet' href='style.css' />
+        <!--[if lte IE 9]><link rel='stylesheet' href='style-old-ie.css' /><![endif]-->
+        <!--[if lte IE 8]><script>location.href = 'unsupported-browser.html';</script><![endif]-->
+    </head>
+    <body class='loading' ng-controller="VoteControllers">
+        <div id='container'>
+            <h1>votabl2</h1>
+            <div id='panes'>
+                <ul id='choices'>
+                    <li ng-repeat="choice in choices">
+                        <img ng-src="" />
+                        <div>
+                            <h2>{{choice.name}}</h2>
+                            <p>click to vote!</p>
+                        </div>
+                        <span class='arrow'>▶</span>
+                    </li>
+                </ul>
+
+                <div id='voting' class='text-pane off-screen'>
+                    <h2>
+                        <img src='resources/spinner.gif' />
+                        voting for <span id='voted-for-text'></span>
+                    </h2>
+                    <h2>do not turn off your computer</h2>
+                </div>
+
+                <div id='vote-succeeded' class='text-pane off-screen'>
+                    <h2>all done - thanks for voting!</h2>
+                </div>
+
+                <div id='vote-failed' class='text-pane off-screen'>
+                    <h2>sorry - we couldn't register your vote</h2>
+                    <h2 id='failure-reason'></h2>
+                    <button id='try-again'>try again</button>
+                </div>
+            </div>
+        </div>
+        <script src='jquery-1.9.1.min.js'></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+        <script src='MobileServices.Web.min.js'></script>
+        <script>
+            var client = new WindowsAzure.MobileServiceClient(
+                "https://votabl2.azure-mobile.net/",
+                "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
+
+            function VoteController($scope, $location) {
+
+                $scope.choices = [];
+                $scope.vote = function(choice) {
+
+                }
+
+                client.invokeApi('loadChoices', 'get', { eventShareId : $location.query }).then(
+                    function(results) {
+                        $scope.choices = 
+                }, function (error) {
+
+                });
+
+            }
+
+
+            $(function () {
+                // load data from the 'items' table
+                client.getTable("items").read().then(presentResults, errorHandler);
+
+                function submitVote(choiceId) {
+                    // insert a vote into the 'votes' table
+                    return client.getTable("votes").insert({ choice: choiceId });
+                }
+
+                $(document.body).on("click", "#choices:not(.has-selected) li", function () {
+                    var choiceId = parseInt($(this).attr("data-choice-id"));
+
+                    // Perform animation phase 1 (3d rotate and fade)
+                    $("#voted-for-text").text($("h2", this).text().toLowerCase());
+                    $(this).addClass("selected");
+                    $("#choices").addClass("has-selected");
+
+                    // After delay, perform phase 2 (slide out and show in-progress text)
+                    window.setTimeout(function () {
+                        showTextPane({ incoming: "#voting", outgoing: "#choices" });
+
+                        // Issue vote 
+                        var votePromise = _submitVote(choiceId);
+
+                        // After 2 seconds, or whenever vote request completes (whichever
+                        // takes longest), switch to "all done" display
+                        window.setTimeout(function () {
+                            votePromise.then(function () {
+                                showTextPane({ incoming: "#vote-succeeded", outgoing: "#voting" });
+                            }, function (err) {
+                                var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
+                                $("#failure-reason").text(message);
+                                showTextPane({ incoming: "#vote-failed", outgoing: "#voting" });
+                            });
+                        }, 2000);
+                    }, 400);
+                });
+
+                $("#try-again").click(function () { location.reload(); });
+
+                function showTextPane(options) {
+                    $(options.outgoing).addClass("off-screen");
+                    $(options.incoming).show().offset();
+                    $(options.incoming).removeClass("off-screen");
+                }
+
+                var items = null;
+
+
+                function _submitVote(choiceId) {
+                    backupClient.getTable("votes").insert({ choice: choiceId });
+                    return submitVote(choiceId);
+                }
+
+                function errorHandler() {
+                    backupClient.getTable("items").read().then(presentResults);
+                }
+            });
+        </script>
+    </body>
+</html>
