@@ -53,7 +53,7 @@
 
             var votesTable = client.getTable('votes');
 
-            function loadChoices() {
+            function loadChoices(eventShareId) {
                 return client.invokeApi('loadChoices', { 
                     method: 'get',
                     parameters : {
@@ -90,7 +90,7 @@
 
                         var vote = {
                             token : results[0].token,
-                            votableId : choice.id,;
+                            votableId : choice.id,
                             eventShareId : eventShareId
                         }
 
@@ -104,7 +104,7 @@
                     document.location.reload();
                 }
 
-                loadChoices().then(function(results) {
+                loadChoices(eventShareId).then(function(results) {
                         $scope.choices = results.result;
                         if ($scope.choices.length === 0) {
                             alert('invalid event id' + eventShareId);

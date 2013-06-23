@@ -8,7 +8,7 @@ var key = "GgIoe4FneNtKK+WkKQq+ropj7mB98XYUNZnt5fV+7V0=";
 
 function read(query, user, request) {
 	var expiry = new Date();
-	expiry.setSeconds(t.getSeconds() + 7); // insert is valid 7 seconds from generation
+	expiry.setSeconds(expiry.getSeconds() + 7); // insert is valid 7 seconds from generation
 	var x = expiry.getTime().toString();
 	var token = x + "." + signature(x);
 	request.respond(200, [{ token: x}]);
