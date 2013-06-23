@@ -20,6 +20,10 @@ namespace Votabl2.Models
             _loadVotesCommand = new DelegateCommand(LoadVotes);
             _newItem = new NewItemViewModel(Create);
             _votablsTable = MainViewModel.Client.GetTable<Votabl>();
+            votabl2Push.NotificationArrived = s =>
+            {
+                LoadVotes();
+            };
         }
 
         public async void Load()
@@ -39,7 +43,7 @@ namespace Votabl2.Models
             foreach (var votabl in this.Details)
             {
                 var votes = arr.SingleOrDefault(c => c.votablId == votabl.Id);
-                votabl.Count = votes == null ? 0 : votes.count;
+                votabl.Count = votes == null ? 0 : votes.total;
             }
         }
 
