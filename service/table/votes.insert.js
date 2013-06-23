@@ -37,7 +37,7 @@ function checkToken(item, request) {
 	var parts = item.token.split('.');
 	var date = new Date(parseInt(parts[0]));
 	var sig = parts[1];
-	if (date > new Date()) {
+	if (new Date() > date) {
 		request.respond(400, "Your voting token expired, try again");
 		throw new Error('Token expired ' + item.token);
 	}
