@@ -41,7 +41,7 @@ function checkToken(item, request) {
 		request.respond(400, "Your voting token expired, try again");
 		throw new Error('Token expired ' + item.token);
 	}
-	var valid = signature(date.toString()) == parts[0];
+	var valid = signature(date.getTime().toString()) == parts[0];
 	if (!valid) {
 		request.respond(400, "No valid voting token");
 		throw new Error('Invalid Signature ' + item.token);
