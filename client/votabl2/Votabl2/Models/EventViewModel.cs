@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Votabl2.Common;
+using Windows.Networking.PushNotifications;
 
 namespace Votabl2.Models
 {
@@ -22,13 +23,42 @@ namespace Votabl2.Models
             _loadVotesCommand = new DelegateCommand(LoadVotes);
             _newItem = new NewItemViewModel(Create);
             _votablsTable = MainViewModel.Client.GetTable<Votabl>();
-            votabl2Push.NotificationArrived = s =>
+
+            var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += dataTransferManager_DataRequested;
+
+            Listen();
+        }
+
+        private async void Listen()
+        {
+            var channel = await Windows.Networking.PushNotifications.PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            channel.PushNotificationReceived += channel_PushNotificationReceived;
+        }
+
+        void channel_PushNotificationReceived(Windows.Networking.PushNotifications.PushNotificationChannel sender, Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs args)
+        {
+            if (args.NotificationType == PushNotificationType.Raw)
             {
-                _context.Post(ignored =>
+                dynamic json = JObject.Parse(args.RawNotification.Content);
+                if (json.eventShareId == Event.EventShareId)
                 {
-                    LoadVotes();
-                }, null);
-            };
+                    _context.Post(ignored =>
+                    {
+                        LoadVotes();
+                    }, null);
+                }
+            }
+        }
+
+        void dataTransferManager_DataRequested(Windows.ApplicationModel.DataTransfer.DataTransferManager sender, Windows.ApplicationModel.DataTransfer.DataRequestedEventArgs args)
+        {
+            var message = string.Format("Hey folks, I need your opinion on {0}. Vote here: http://localhost:8080/index.html#/{1} #votabl2 #bldwin",
+                Event.Name,
+                Event.EventShareId);
+            args.Request.Data.Properties.Title = "Share Votabl Link";
+            args.Request.Data.Properties.Description = "Demonstrates how to share";
+            args.Request.Data.SetText(message);
         }
 
         public async void Load()

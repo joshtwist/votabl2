@@ -48,7 +48,7 @@
             IsSwipeEnabled="false">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                    <Grid HorizontalAlignment="Left" Width="250" Height="250" local:Wibble.Property="{Binding Count}">
                         <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
                             <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
                         </Border>

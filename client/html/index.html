@@ -37,8 +37,9 @@
 
                 <div id='vote-failed' class='text-pane off-screen'>
                     <h2>sorry - we couldn't register your vote</h2>
-                    <h2 id='failure-reason'>{{failureReason}}</h2>
-                    <button id='try-again' ng-click="tryAgain">try again</button>
+                    <p id='failure-reason'>{{failureReason}}</p>
+                    <p>&nbsp;</p>
+                    <button id='try-again' ng-click="tryAgain()">try again</button>
                 </div>
             </div>
         </div>
@@ -67,12 +68,17 @@
                         votablId : choice.id,
                         eventShareId : eventShareId }).then(function(){
                             showTextPane({ incoming: "#vote-succeeded", outgoing: "#voting" });
-                        }, function(error) {
+                        }, function(err) {
                             var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
                             $scope.failureReason = err;
                             showTextPane({ incoming: "#vote-failed", outgoing: "#voting" });
+                            $scope.$apply();
                         })
                 };
+
+                $scope.tryAgain = function() {
+                    document.location.reload();
+                }
 
                 client.invokeApi('loadChoices',{ 
                     method: 'get',

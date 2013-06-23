@@ -19,8 +19,6 @@ namespace Votabl2
             var token = Windows.System.Profile.HardwareIdentification.GetPackageSpecificToken(null);
             string installationId = Windows.Security.Cryptography.CryptographicBuffer.EncodeToBase64String(token.Id);
 
-            channel.PushNotificationReceived += channel_PushNotificationReceived;
-
             var ch = new JObject();
             ch.Add("channelUri", channel.Uri);
             ch.Add("installationId", installationId);
@@ -35,19 +33,9 @@ namespace Votabl2
             }
         }
 
-        static void channel_PushNotificationReceived(Windows.Networking.PushNotifications.PushNotificationChannel sender, Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs args)
-        {
-            if (args.NotificationType == Windows.Networking.PushNotifications.PushNotificationType.Raw)
-            {
-                NotificationArrived(args.RawNotification.Content);
-            }
-        }
-
         private static void HandleInsertChannelException(Exception exception)
         {
 
         }
-
-        public static Action<string> NotificationArrived;
     }
 }
