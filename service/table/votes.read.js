@@ -5,7 +5,7 @@
 // you'd have users authenticate - but that would have slowed things up too much! Have fun :)
 var crypto = require('crypto');
 
-var key = "GgIoe4FneNtKK+WkKQq+ropj7mB98XYUNZnt5fV+7V0=";
+var signatureKey = "GgIoe4FneNtKK+WkKQq+ropj7mB98XYUNZnt5fV+7V0=";
 
 function read(query, user, request) {
 	var expiry = new Date();
@@ -16,8 +16,7 @@ function read(query, user, request) {
 }
 
 function signature(input) {
-	var key = crypto.createHash('sha256').update(key).digest('binary');
-	console.log(input, key);
+	var key = crypto.createHash('sha256').update(signatureKey).digest('binary');
 	var str = crypto.createHmac('sha256', key).update(input).digest('base64');
 	return str;
 }
