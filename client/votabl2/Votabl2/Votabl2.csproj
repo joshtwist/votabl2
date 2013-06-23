@@ -106,12 +106,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\ActivityHandler.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
-    <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Common\ViewModel.cs" />
     <Compile Include="Common\Wibble.cs" />
@@ -122,10 +121,12 @@
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\BlobHelper.cs" />
+    <Compile Include="Models\BusyViewModel.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\MainViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\NewItemViewModel.cs" />
+    <Compile Include="Models\RawVote.cs" />
     <Compile Include="Models\Votabl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\mobile services\votabl2\push.register.cs">
@@ -166,6 +167,15 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight.Extras.Win8">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\GalaSoft.MvvmLight.Extras.Win8.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Win8">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\GalaSoft.MvvmLight.Win8.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\win8\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>

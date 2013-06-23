@@ -1,4 +1,6 @@
-﻿using Microsoft.WindowsAzure.MobileServices;
+﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -20,35 +22,22 @@ namespace Votabl2.Models
 
         public EventViewModel()
         {
-            _loadVotesCommand = new DelegateCommand(LoadVotes);
+            _loadVotesCommand = new RelayCommand(LoadVotes);
             _newItem = new NewItemViewModel(Create);
             _votablsTable = MainViewModel.Client.GetTable<Votabl>();
 
             var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += dataTransferManager_DataRequested;
 
-            Listen();
-        }
+            this.BusyViewModel = BusyViewModel.Instance();
 
-        private async void Listen()
-        {
-            var channel = await Windows.Networking.PushNotifications.PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-            channel.PushNotificationReceived += channel_PushNotificationReceived;
-        }
-
-        void channel_PushNotificationReceived(Windows.Networking.PushNotifications.PushNotificationChannel sender, Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs args)
-        {
-            if (args.NotificationType == PushNotificationType.Raw)
+            Messenger.Default.Register<RawVote>(this, vote =>
             {
-                dynamic json = JObject.Parse(args.RawNotification.Content);
-                if (json.eventShareId == Event.EventShareId)
+                if (vote.EventShareId == Event.EventShareId)
                 {
-                    _context.Post(ignored =>
-                    {
-                        LoadVotes();
-                    }, null);
+                    LoadVotes();
                 }
-            }
+            });
         }
 
         void dataTransferManager_DataRequested(Windows.ApplicationModel.DataTransfer.DataTransferManager sender, Windows.ApplicationModel.DataTransfer.DataRequestedEventArgs args)
@@ -124,9 +113,9 @@ namespace Votabl2.Models
             }
         }
 
-        private DelegateCommand _loadVotesCommand;
+        private RelayCommand _loadVotesCommand;
 
-        public DelegateCommand LoadVotesCommand
+        public RelayCommand LoadVotesCommand
         {
             get { return _loadVotesCommand; }
             set
@@ -135,6 +124,6 @@ namespace Votabl2.Models
             }
         }
 
-
+        public BusyViewModel BusyViewModel { get; private set; }
     }
 }

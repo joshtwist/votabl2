@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Votabl2.Models
         public NewItemViewModel(Action onDone)
         {
             _onDone = onDone;
-            _createCommand = new DelegateCommand(Create);
+            _createCommand = new RelayCommand(Create);
         }
 
         public async void Create()
@@ -69,9 +70,9 @@ namespace Votabl2.Models
             }
         }
 
-        private DelegateCommand _createCommand;
+        private RelayCommand _createCommand;
 
-        public DelegateCommand CreateCommand
+        public RelayCommand CreateCommand
         {
             get { return _createCommand; }
             set

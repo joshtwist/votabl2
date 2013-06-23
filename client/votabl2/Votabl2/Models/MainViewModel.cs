@@ -12,6 +12,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Popups;
+using GalaSoft.MvvmLight.Command;
 
 namespace Votabl2.Models
 {
@@ -22,15 +23,13 @@ namespace Votabl2.Models
         private static MainViewModel _instance;
 
         private IMobileServiceTable<Event> _eventsTable;
-        private IMobileServiceTable<Votabl> _votablsTable;
-
-        private StorageFile _newImageFile;
 
         static MainViewModel()
         {
             Client = new MobileServiceClient(
             "https://votabl2.azure-mobile.net/",
-            "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
+            "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55",
+            new ActivityHandler());
 
             Client.SerializerSettings.CamelCasePropertyNames = true;
         }
@@ -38,13 +37,14 @@ namespace Votabl2.Models
         private MainViewModel()
         {
             _eventsTable = Client.GetTable<Event>();
-            _votablsTable = Client.GetTable<Votabl>();
 
-            _insertCommand = new DelegateCommand(Insert);
-            _refreshCommand = new DelegateCommand(Load);
-            _chooseCommand = new DelegateCommand<Event>(Choose);
+            _insertCommand = new RelayCommand(Insert);
+            _refreshCommand = new RelayCommand(Load);
+            _chooseCommand = new RelayCommand<Event>(Choose);
 
             _newItem = new NewItemViewModel(Insert);
+
+            BusyViewModel = BusyViewModel.Instance();
         }
 
         public Action<EventViewModel> NavigateAction { get; set; }
@@ -107,9 +107,9 @@ namespace Votabl2.Models
             }
         }
 
-        private DelegateCommand<Event> _chooseCommand;
+        private RelayCommand<Event> _chooseCommand;
 
-        public DelegateCommand<Event> ChooseCommand
+        public RelayCommand<Event> ChooseCommand
         {
             get { return _chooseCommand; }
             set
@@ -118,9 +118,9 @@ namespace Votabl2.Models
             }
         }
 
-        private DelegateCommand _insertCommand;
+        private RelayCommand _insertCommand;
 
-        public DelegateCommand InsertCommand
+        public RelayCommand InsertCommand
         {
             get { return _insertCommand; }
             set
@@ -129,9 +129,9 @@ namespace Votabl2.Models
             }
         }
 
-        private DelegateCommand _refreshCommand;
+        private RelayCommand _refreshCommand;
 
-        public DelegateCommand RefreshCommand
+        public RelayCommand RefreshCommand
         {
             get { return _refreshCommand; }
             set
@@ -160,5 +160,8 @@ namespace Votabl2.Models
             }
             return _instance;
         }
+
+        public BusyViewModel BusyViewModel { get; private set; }
+
     }
 }

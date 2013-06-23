@@ -26,19 +26,20 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ChildrenTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition/>
-            </TransitionCollection>
-        </Grid.ChildrenTransitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.ChildrenTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </Grid.ChildrenTransitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Horizontal scrolling grid -->
-        <GridView
+            <!-- Horizontal scrolling grid -->
+            <GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
@@ -50,35 +51,43 @@
             IsSwipeEnabled="false" 
             IsItemClickEnabled="True"
             ItemClick="itemGridView_ItemClick">
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Left" Width="300" Height="300">
-                        <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                            <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
-                        </Border>
-                        <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" Margin="15,10,15,15" FontWeight="SemiBold"/>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left" Width="300" Height="300">
+                            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" Margin="15,10,15,15" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
 
-        <!-- Back button and page title -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <AppBarButton x:Name="backButton" Icon="Back" Height="95" Margin="10,46,10,0"
+            <!-- Back button and page title -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <AppBarButton x:Name="backButton" Icon="Back" Height="95" Margin="10,46,10,0"
                           Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}" 
                           Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=Self}}"
                           AutomationProperties.Name="Back"
                           AutomationProperties.AutomationId="BackButton"
                           AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+            </Grid>
         </Grid>
+        <ProgressRing IsActive="{Binding BusyViewModel.IsBusy}" 
+                      Foreground="White" 
+                      Width="50" 
+                      Height="50" 
+                      HorizontalAlignment="Right" 
+                      VerticalAlignment="Top"
+                      Margin="50"/>
     </Grid>
     <Page.BottomAppBar>
         <AppBar>
