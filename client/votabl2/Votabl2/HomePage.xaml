@@ -47,19 +47,19 @@
             Padding="116,136,116,46"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             SelectionMode="None"
-            IsSwipeEnabled="false">
+            IsSwipeEnabled="false" 
+            IsItemClickEnabled="True"
+            ItemClick="itemGridView_ItemClick">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding ElementName=pageRoot, Path=DataContext.ChooseCommand}" BorderThickness="0" CommandParameter="{Binding}">
-                        <Grid HorizontalAlignment="Left" Width="300" Height="300">
-                            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                                <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
-                            </Border>
-                            <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" Height="60" Margin="15,0,15,0" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
+                    <Grid HorizontalAlignment="Left" Width="300" Height="300">
+                        <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                            <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                            <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" Margin="15,10,15,15" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>

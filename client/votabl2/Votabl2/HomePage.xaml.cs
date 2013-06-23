@@ -94,5 +94,10 @@ namespace Votabl2
 
         #endregion
 
+        private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            _viewModel.ChooseCommand.Execute(e.ClickedItem);
+        }
+
     }
 }
