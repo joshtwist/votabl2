@@ -42,7 +42,7 @@ function checkToken(item, request) {
 		throw new Error('Token expired ' + item.token);
 	}
 	var validationSignature = signature(parts[0])
-	var valid = validationSignature == parts[0];
+	var valid = validationSignature == parts[1];
 	if (!valid) {
 		request.respond(400, "No valid voting token");
 		throw new Error('Invalid Signature ' + item.token + " - " + validationSignature);
