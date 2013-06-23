@@ -47,6 +47,8 @@ function checkToken(item, request) {
 		request.respond(400, "No valid voting token");
 		throw new Error('Invalid Signature ' + item.token + " - " + validationSignature);
 	}
+
+	delete item.token;
 }
 
 function signature(input) {
