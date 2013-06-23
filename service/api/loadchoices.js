@@ -3,7 +3,6 @@ exports.get = function(request, response) {
    	votabls.where({ eventShareId: request.query.eventShareId }).read({
    		success: function(results) {
    			results.forEach(function(r) {
-   				delete r.id;
    				delete r.eventShareId;
    			});
    			response.send(200, results);
