@@ -25,7 +25,7 @@
 
                 <div id='voting' class='text-pane off-screen'>
                     <h2>
-                        <img src='resources/spinner.gif' />
+                        <img src='spinner.gif' />
                         voting for <span id='voted-for-text'>{{selected.name}}</span>
                     </h2>
                     <h2>do not turn off your computer</h2>
@@ -51,11 +51,10 @@
                 "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
 
             function VoteController($scope, $location) {
-                var eventShareId = $location.search('eventShareId');
-
+                var eventShareId = $location.path().substring(1);
                 if (!eventShareId || eventShareId.length < 10)
                 {
-                    alert('invalid event');
+                    alert('invalid event id' + eventShareId);
                     return;
                 }
 
@@ -65,9 +64,9 @@
                     $scope.selected = choice; 
                     showTextPane({ incoming: "#voting", outgoing: "#choices" });
                     client.getTable('votes').insert({ 
-                        votablId : choice.votablId,
+                        votablId : choice.id,
                         eventShareId : eventShareId }).then(function(){
-
+                            showTextPane({ incoming: "#vote-succeeded", outgoing: "#voting" });
                         }, function(error) {
                             var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
                             $scope.failureReason = err;
@@ -77,9 +76,14 @@
 
                 client.invokeApi('loadChoices',{ 
                     method: 'get',
-
-                    eventShareId : eventShareId }).then(function(results) {
-                        $scope.choices = results;
+                    parameters : {
+                        eventShareId : eventShareId }
+                    }).then(function(results) {
+                        $scope.choices = results.result;
+                        if ($scope.choices.length === 0) {
+                            alert('invalid event id' + eventShareId);
+                            return;
+                        }
                         $scope.$apply();
                         $(document.body).removeClass("loading");
                 }, function (err) {

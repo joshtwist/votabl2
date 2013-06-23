@@ -4,8 +4,8 @@ exports.get = function(request, response) {
    		success: function(results) {
    			results.forEach(function(r) {
    				delete r.id;
+   				delete r.eventShareId;
    			});
-   			console.log(results);
    			response.send(200, results);
    		}
    	});
