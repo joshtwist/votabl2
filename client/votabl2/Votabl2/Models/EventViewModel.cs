@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Votabl2.Common;
 
@@ -13,6 +14,7 @@ namespace Votabl2.Models
 {
     public class EventViewModel : ViewModel
     {
+        private SynchronizationContext _context = SynchronizationContext.Current;
         private IMobileServiceTable<Votabl> _votablsTable;
 
         public EventViewModel()
@@ -22,7 +24,10 @@ namespace Votabl2.Models
             _votablsTable = MainViewModel.Client.GetTable<Votabl>();
             votabl2Push.NotificationArrived = s =>
             {
-                LoadVotes();
+                _context.Post(ignored =>
+                {
+                    LoadVotes();
+                }, null);
             };
         }
 
