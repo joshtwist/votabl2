@@ -51,6 +51,20 @@
                 "https://votabl2.azure-mobile.net/",
                 "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
 
+            var votesTable = client.getTable('votes');
+
+            function loadChoices() {
+                return client.invokeApi('loadChoices', { 
+                    method: 'get',
+                    parameters : {
+                        eventShareId : eventShareId }
+                    });
+            }
+
+            function insertVote(vote) {
+                return votesTable.insert(vote);
+            }
+
             function VoteController($scope, $location) {
                 var eventShareId = $location.path().substring(1);
                 if (!eventShareId || eventShareId.length < 10)
@@ -64,27 +78,33 @@
                 $scope.vote = function(choice) {
                     $scope.selected = choice; 
                     showTextPane({ incoming: "#voting", outgoing: "#choices" });
-                    client.getTable('votes').insert({ 
-                        votablId : choice.id,
-                        eventShareId : eventShareId }).then(function(){
+
+                    var handleError = function(err) {
+                        var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
+                        $scope.failureReason = err;
+                        showTextPane({ incoming: "#vote-failed", outgoing: "#voting" });
+                        $scope.$apply();
+                    }
+
+                    votesTable.read().then(function(results) {
+
+                        var vote = {
+                            token : results[0].token,
+                            votableId : choice.id,;
+                            eventShareId : eventShareId
+                        }
+
+                        insertVote(vote).then(function(){
                             showTextPane({ incoming: "#vote-succeeded", outgoing: "#voting" });
-                        }, function(err) {
-                            var message = (err.request && err.request.status ? err.request.status + " - " : "") + err.toString();
-                            $scope.failureReason = err;
-                            showTextPane({ incoming: "#vote-failed", outgoing: "#voting" });
-                            $scope.$apply();
-                        })
+                        }, handleError);
+                    }, handleError);
                 };
 
                 $scope.tryAgain = function() {
                     document.location.reload();
                 }
 
-                client.invokeApi('loadChoices',{ 
-                    method: 'get',
-                    parameters : {
-                        eventShareId : eventShareId }
-                    }).then(function(results) {
+                loadChoices().then(function(results) {
                         $scope.choices = results.result;
                         if ($scope.choices.length === 0) {
                             alert('invalid event id' + eventShareId);
