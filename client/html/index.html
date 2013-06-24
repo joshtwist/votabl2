@@ -48,21 +48,18 @@
         <script src='MobileServices.Web.min.js'></script>
         <script>
             var client = new WindowsAzure.MobileServiceClient(
-                "https://votabl2.azure-mobile.net/",
-                "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
+                "https://votabl2.azure-mobile.net/");
 
             var votesTable = client.getTable('votes');
 
             function loadChoices(eventShareId) {
-                return client.invokeApi('loadChoices', { 
-                    method: 'get',
-                    parameters : {
-                        eventShareId : eventShareId }
-                    });
+                // TODO invoke API
+
             }
 
             function insertVote(vote) {
-                return votesTable.insert(vote);
+                // TODO - insert vote
+
             }
 
             function VoteController($scope, $location) {
