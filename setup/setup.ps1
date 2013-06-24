@@ -4,6 +4,14 @@ if ($m.Count -eq 0) {
 	azure account import %HOMEPATH%/Downloads/build.publishsettings
 }
 
+$svc = 'votabl2'
+
+$l = azure mobile list | where { $_ -contains $svc } | measure
+
+if ($l.Count -gt 0) {
+	azure mobile delete -q $svc
+} 
+
 git reset --hard
 git clean --force
 
