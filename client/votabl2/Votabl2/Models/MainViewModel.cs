@@ -1,4 +1,4 @@
-using Microsoft.WindowsAzure.MobileServices;
+﻿using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace Votabl2.Models
         {
             Client = new MobileServiceClient(
             "https://votabl2.azure-mobile.net/",
-            "QYVwiXphqoLusPIjsPRFoGDxivzzIC27",
+            "sDxEpmucAIMPMeaVbuftOAMyHvvgPw89",
             new ActivityHandler());
 
             Client.SerializerSettings.CamelCasePropertyNames = true;
