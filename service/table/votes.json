@@ -1,0 +1,1 @@
+{"routes":{"/":{"insert":{"permission":"public"},"read":{"permission":"public"},"update":{"permission":"admin"},"delete":{"permission":"admin"}}}}
