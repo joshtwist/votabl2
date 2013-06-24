@@ -1,4 +1,4 @@
-$svc = "votabl2"
+param([String]$svc='votabl2')
 
 $t = azure mobile table list $svc | where { $_.Contains("votes") } | measure
 
@@ -7,11 +7,18 @@ if ($t.Count -eq 1) {
 }
 	
 azure mobile table create -p 'insert=public,update=admin,delete=admin,read=public' $svc votes
+
+#insert data before adding the token validation script
+node data.js $svc
+azure mobile data truncate -q votabl2 votes
+
 azure mobile script upload $svc table/votes.insert.js
 azure mobile script upload $svc table/votes.read.js
 
 #grab the existing application key
-$origKeyLine = azure mobile show $svc | where { $_.Contains("applicationKey") }
+$details = azure mobile show $svc
+$masterLine = $details | where { $_.Contains("masterKey") }
+$origKeyLine = $details | where { $_.Contains("applicationKey") }
 
 #extract the app key
 $reOrig = [regex] 'applicationKey (.*)'
@@ -27,3 +34,5 @@ $key = $reNew.Matches($newKeyLine).Groups[1].Value
 $path = '..\client\votabl2\Votabl2\Models\MainViewModel.cs'
 
 (Get-Content $path) | foreach { $_ -replace $orig, $key } | Set-Content $path
+
+azure mobile config set votabl2 dynamicSchemaEnabled false
