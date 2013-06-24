@@ -3,7 +3,7 @@ $svc = "votabl2"
 $t = azure mobile table list $svc | where { $_.Contains("votes") } | measure
 
 if ($t.Count -eq 1) {
-	azure mobile table delete $svc votes
+	azure mobile table delete -q $svc votes
 }
 	
 azure mobile table create -p 'insert=public,update=admin,delete=admin,read=public' $svc votes
@@ -26,4 +26,4 @@ $key = $reNew.Matches($newKeyLine).Groups[1].Value
 
 $path = '..\client\votabl2\Votabl2\Models\MainViewModel.cs'
 
-Get-Content $path | foreach { $_ -replace $orig, $key } | Set-Content $path
+(Get-Content $path) | foreach { $_ -replace $orig, $key } | Set-Content $path

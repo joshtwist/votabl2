@@ -28,7 +28,7 @@ namespace Votabl2.Models
         {
             Client = new MobileServiceClient(
             "https://votabl2.azure-mobile.net/",
-            "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55",
+            "kYkbhWSNsvKDfoGMPfdxAsZYLdAeAG95",
             new ActivityHandler());
 
             Client.SerializerSettings.CamelCasePropertyNames = true;
