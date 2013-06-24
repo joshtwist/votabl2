@@ -39,9 +39,11 @@ $reNew = [regex] 'application key is (.*)'
 $key = $reNew.Matches($newKeyLine).Groups[1].Value
 
 $path = '..\client\votabl2\Votabl2\Models\MainViewModel.cs'
+$app = '..\client\votabl2\Votabl2\App.xaml.cs'
 
 #swap the masterkey in the main file so that folks can't see it
 (Get-Content $path) | foreach { $_ -replace $orig, $key } | Set-Content $path
+(Get-Content $app) | foreach { $_ -replace $orig, $key } | Set-Content $app
 
 #disable dynamic schema for the remainder of the demonstration.
 azure mobile config set votabl2 dynamicSchemaEnabled false
