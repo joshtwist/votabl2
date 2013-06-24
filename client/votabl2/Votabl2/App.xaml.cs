@@ -24,11 +24,6 @@ namespace Votabl2
     /// </summary>
     sealed partial class App : Application
     {
-        // http://go.microsoft.com/fwlink/?LinkId=290986&clcid=0x409
-        public static Microsoft.WindowsAzure.MobileServices.MobileServiceClient votabl2Client = new Microsoft.WindowsAzure.MobileServices.MobileServiceClient(
-        "https://votabl2.azure-mobile.net/",
-        "flEkqDIimXoiDPxXqwPzFSBwBbFJSg55");
-
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -79,8 +74,7 @@ namespace Votabl2
             }
             // Ensure the current window is active
             Window.Current.Activate();
-            // http://go.microsoft.com/fwlink/?LinkId=290986&clcid=0x409
-            Votabl2.votabl2Push.UploadChannel();
+
         }
 
         /// <summary>

@@ -26,17 +26,18 @@ namespace Votabl2.Models
 
         static MainViewModel()
         {
-            Client = new MobileServiceClient(
-            "https://votabl2.azure-mobile.net/",
-            "sDxEpmucAIMPMeaVbuftOAMyHvvgPw89",
-            new ActivityHandler());
+            // TODO - add client
 
-            Client.SerializerSettings.CamelCasePropertyNames = true;
+
+            // TODO - activity handler
+
+            // TODO - client serializer settings
         }
 
         private MainViewModel()
         {
-            _eventsTable = Client.GetTable<Event>();
+            // TODO - initialize _eventsTable
+            
 
             _insertCommand = new RelayCommand(Insert);
             _refreshCommand = new RelayCommand(Load);
@@ -51,12 +52,13 @@ namespace Votabl2.Models
 
         public async void Login()
         {
-            while (Client.CurrentUser == null)
+            //while (Client.CurrentUser == null)
             {
                 try
                 {
-                    await Client.LoginAsync(MobileServiceAuthenticationProvider.Twitter, true);
-                    Load();
+                    // TODO - add login
+                    
+
                 }
                 catch (Exception) { }
             }
@@ -71,22 +73,23 @@ namespace Votabl2.Models
 
         private async void Insert()
         {
-            var evt = new Event { Name = NewItem.Name, ImageUrl = "" };
+            var evt = new Event { Name = NewItem.Name };
 
-            await _eventsTable.InsertAsync(evt);
+            // TODO - insert
 
-            string readUrl = await BlobHelper.UploadImageToBlobStorage(NewItem.ImageFile, evt.ImageUrl);
 
-            evt.ImageUrl = readUrl;
+            // TODO - upload image and set imageUrl on return
+  
+
 
             Events.Add(evt);
         }
 
         private async void Load()
         {
-            var events = await _eventsTable.ReadAsync();
-            this.Events.Clear();
-            this.Events.AddRange(events);
+            // TODO - load events, clear collection and AddRange
+
+
         }
 
         private readonly ObservableCollection<Event> _events = new ObservableCollection<Event>();

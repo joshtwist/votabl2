@@ -17,32 +17,29 @@ namespace Votabl2.Models
 {
     public class EventViewModel : ViewModel
     {
-        private SynchronizationContext _context = SynchronizationContext.Current;
         private IMobileServiceTable<Votabl> _votablsTable;
 
         public EventViewModel()
         {
+            //TODO - uncomment
+            //_votablsTable = MainViewModel.Client.GetTable<Votabl>();
+
             _loadVotesCommand = new RelayCommand(LoadVotes);
             _newItem = new NewItemViewModel(Create);
-            _votablsTable = MainViewModel.Client.GetTable<Votabl>();
-
+            
             var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += dataTransferManager_DataRequested;
 
             this.BusyViewModel = BusyViewModel.Instance();
 
-            Messenger.Default.Register<RawVote>(this, vote =>
-            {
-                if (vote.EventShareId == Event.EventShareId)
-                {
-                    LoadVotes();
-                }
-            });
+            // TODO Register for RawVote message
+
+
         }
 
         void dataTransferManager_DataRequested(Windows.ApplicationModel.DataTransfer.DataTransferManager sender, Windows.ApplicationModel.DataTransfer.DataRequestedEventArgs args)
         {
-            var message = string.Format("Hey folks, I need your opinion on {0}. Vote here: http://localhost:8080/index.html#/{1} #votabl2 #bldwin",
+            var message = string.Format("I need your opinion on {0}. Vote here: http://localhost:8080/index.html#/{1} #votabl2 #bldwin",
                 Event.Name,
                 Event.EventShareId);
             args.Request.Data.Properties.Title = "Share Votabl Link";
@@ -52,34 +49,23 @@ namespace Votabl2.Models
 
         public async void Load()
         {
-            this.Details.Clear();
+            // TODO - load votabls by eventShareId, clear and addrange
 
-            var votabls = await _votablsTable.Where(v => v.EventShareId == Event.EventShareId).ToEnumerableAsync();
-
-            this.Details.AddRange(votabls);
+           
         }
 
         public async void LoadVotes()
         {
-            var parameters = new Dictionary<string, string>() { { "eventShareId" , Event.EventShareId }};
-            dynamic result = await MainViewModel.Client.InvokeApiAsync("eventCount", HttpMethod.Post, parameters); 
-            IEnumerable<dynamic> arr = (IEnumerable<dynamic>) result;
-            foreach (var votabl in this.Details)
-            {
-                var votes = arr.SingleOrDefault(c => c.votablId == votabl.Id);
-                votabl.Count = votes == null ? 0 : votes.total;
-            }
+            // TODO - Load Votes
+
         }
 
         private async void Create()
         {
             var votabl = new Votabl { Name = NewItem.Name, ImageUrl = "", EventShareId = Event.EventShareId };
 
-            await _votablsTable.InsertAsync(votabl);
+            // TODO - insert votabl, upload image and read back imageUrl
 
-            string readUrl = await BlobHelper.UploadImageToBlobStorage(NewItem.ImageFile, votabl.ImageUrl);
-
-            votabl.ImageUrl = readUrl;
 
             this.Details.Add(votabl);
         }
