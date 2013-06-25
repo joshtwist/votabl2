@@ -15,4 +15,4 @@ if ($l.Count -gt 0) {
 git reset --hard
 git clean --force
 
-start -WorkingDirectory ..\client\html http-server
+start -WorkingDirectory ..\client\html http-server -p 8080
