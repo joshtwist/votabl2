@@ -12,7 +12,11 @@ if ($l.Count -gt 0) {
 	azure mobile delete -q $svc
 } 
 
+cd ..
+
 git reset --hard
 git clean --force
+
+cd setup
 
 start -WorkingDirectory ..\client\html http-server -p 8080
