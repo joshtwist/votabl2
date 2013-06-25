@@ -8,13 +8,6 @@ if ($t.Count -eq 1) {
 	
 azure mobile table create -p 'insert=public,update=admin,delete=admin,read=public' $svc votes
 
-#check if dynamic schema is on, if not, turn it on
-$config = azure mobile config list $svc | where { $_.Contains("dynamicSchemaEnabled true") } | measure
-
-if ($config.Count -eq 0) {
-	azure mobile config set $svc dynamicSchemaEnabled true
-} 
-
 #insert data before adding the token validation script
 node data.js $svc
 azure mobile data truncate -q votabl2 votes
@@ -44,6 +37,3 @@ $app = '..\client\votabl2\Votabl2\App.xaml.cs'
 #swap the masterkey in the main file so that folks can't see it
 (Get-Content $path) | foreach { $_ -replace $orig, $key } | Set-Content $path
 (Get-Content $app) | foreach { $_ -replace $orig, $key } | Set-Content $app
-
-#disable dynamic schema for the remainder of the demonstration.
-azure mobile config set votabl2 dynamicSchemaEnabled false
