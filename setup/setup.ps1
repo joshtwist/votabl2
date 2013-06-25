@@ -19,4 +19,4 @@ git clean --force
 
 cd setup
 
-start -WorkingDirectory ..\client\html http-server -p 8080
+start -WorkingDirectory ..\client\html -ArgumentList "-p 8080" http-server
