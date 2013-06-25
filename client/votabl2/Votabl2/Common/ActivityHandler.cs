@@ -14,10 +14,12 @@ namespace Votabl2.Common
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
         {
-            Messenger.Default.Send<bool>(true, "busy");
-            var response = await base.SendAsync(request, cancellationToken);
-            Messenger.Default.Send<bool>(false, "busy");
-            return response;
+            using (new BusyDisposer())
+            {
+                var response = await base.SendAsync(request, cancellationToken);
+                return response;
+            }
+            
         }
     }
 }

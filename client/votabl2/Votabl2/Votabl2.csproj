@@ -108,6 +108,7 @@
     </Compile>
     <Compile Include="Common\ActivityHandler.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Common\Disposer.cs" />
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
