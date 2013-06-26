@@ -50,6 +50,7 @@ namespace Votabl2.Models
 
 
             Events.Add(evt);
+            NewItem.Name = string.Empty;
         }
 
         private async void Load()

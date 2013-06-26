@@ -52,6 +52,7 @@ namespace Votabl2.Models
             //votabl.ImageUrl = readUrl;
 
             this.Details.Add(votabl);
+            NewItem.Name = string.Empty;
         }
 
         public async void LoadVotes()
