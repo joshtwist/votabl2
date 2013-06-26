@@ -18,7 +18,7 @@ namespace Votabl2.Common
         {
             //Upload image with HttpClient to the blob service using the generated item.SAS
 
-            using (new BusyDisposer())
+            // TODO - add BusyDisposer
             using (var client = new HttpClient())
             {
                 //Get a stream of the media just captured

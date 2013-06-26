@@ -16,7 +16,7 @@
     <Snippet>
       <Code Language="csharp"><![CDATA[var parameters = new Dictionary<string, string>() { { "eventShareId", Event.EventShareId }};
         // Post to the eventCount API
-        dynamic result = await MainViewModel.Client.InvokeApiAsync("eventCount", HttpMethod.Post, parameters);
+        dynamic result = await MainViewModel.Client.InvokeApiAsync("loadVotes", HttpMethod.Post, parameters);
         // convert to an enumerable of dynamic to support foreach
         IEnumerable<dynamic> arr = (IEnumerable<dynamic>) result;
         foreach (var votabl in this.Details) {
