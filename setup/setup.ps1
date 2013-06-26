@@ -9,7 +9,7 @@ $svc = 'votabl2'
 $l = azure mobile list | where { $_.Contains($svc) } | measure
 
 if ($l.Count -gt 0) {
-	azure mobile delete -q $svc
+	azure mobile delete -q -d $svc
 } 
 
 cd ..
