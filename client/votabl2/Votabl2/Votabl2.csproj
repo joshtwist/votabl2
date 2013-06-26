@@ -107,6 +107,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\ActivityHandler.cs" />
+    <Compile Include="Common\BlobHelper.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\Disposer.cs" />
     <Compile Include="Common\Extensions.cs" />
@@ -121,7 +122,6 @@
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\BlobHelper.cs" />
     <Compile Include="Models\BusyViewModel.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\MainViewModel.cs" />

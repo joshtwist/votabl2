@@ -10,7 +10,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Votabl2.Common;
 using System.Net;
 
-namespace Votabl2.Models
+namespace Votabl2.Common
 {
     public static class BlobHelper
     {

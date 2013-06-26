@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json.Linq;
 using System;
@@ -76,12 +77,37 @@ namespace Votabl2.Models
 
         void dataTransferManager_DataRequested(Windows.ApplicationModel.DataTransfer.DataTransferManager sender, Windows.ApplicationModel.DataTransfer.DataRequestedEventArgs args)
         {
-            var message = string.Format("I need your opinion on {0} - http://www.votabl.net/votabl2/index.html#/{1} #votabl2 #bldwin",
+            var message = string.Format("Votabl '{0}' http://www.votabl.net/votabl2/index.html?esid={1} #votabl2 #bldwin",
                 Event.Name,
                 Event.EventShareId);
             args.Request.Data.Properties.Title = "Share Votabl Link";
             args.Request.Data.Properties.Description = "Demonstrates how to share";
             args.Request.Data.SetText(message);
+        }
+
+        private bool _isPolling = false;
+        private int _interval = 500;
+        private int _loops = 40;
+
+        private void StartPolling()
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+            {
+                if (_isPolling)
+                {
+                    return;
+                }
+                _isPolling = true;
+
+                int count = 0;
+
+                while (count < _loops)
+                {
+                    await Task.Delay(_interval);
+                    count++;
+                    LoadVotes();
+                }
+            });
         }
 
         private Event _event;
