@@ -106,6 +106,8 @@ namespace Votabl2.Models
                     count++;
                     LoadVotes();
                 }
+
+                _isPolling = false;
             });
         }
 
