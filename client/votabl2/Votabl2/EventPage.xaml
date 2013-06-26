@@ -95,7 +95,7 @@
                     <AppBarButton.Flyout>
                         <Flyout>
                             <StackPanel MinWidth="400">
-                                <TextBlock FontSize="30">Votabl Name</TextBlock>
+                                <TextBlock FontSize="25">Votabl Name</TextBlock>
                                 <TextBox Text="{Binding NewItem.Name, Mode=TwoWay}" />
                                 <Button Command="{Binding NewItem.CreateCommand}">Create</Button>
                             </StackPanel>
