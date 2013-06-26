@@ -38,6 +38,12 @@ namespace Votabl2.Models
             Setup();
         }
 
+        private async void Load()
+        {
+            // TODO - load events, clear collection and AddRange
+
+        }
+
         private async void Insert()
         {
             var evt = new Event { Name = NewItem.Name, EventShareId = Guid.NewGuid().ToString() };
@@ -50,13 +56,8 @@ namespace Votabl2.Models
 
 
             Events.Add(evt);
+
             NewItem.Name = string.Empty;
-        }
-
-        private async void Load()
-        {
-            // TODO - load events, clear collection and AddRange
-
         }
 
         public async void Login()

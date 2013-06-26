@@ -22,13 +22,11 @@ namespace Votabl2.Models
         {
             //_votablsTable = MainViewModel.Client.GetTable<Votabl>();
 
-            
             // TODO Register for RawVote message
 
 
             Setup();
         }
-
 
         public async void Load()
         {

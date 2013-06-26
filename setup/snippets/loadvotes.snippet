@@ -14,7 +14,7 @@
       <Shortcut>loadvotes</Shortcut>
     </Header>
     <Snippet>
-      <Code Language="csharp"><![CDATA[var parameters = new Dictionary<string, string>() { { "eventShareId" : Event.EventShareId }};
+      <Code Language="csharp"><![CDATA[var parameters = new Dictionary<string, string>() { { "eventShareId", Event.EventShareId }};
         // Post to the eventCount API
         dynamic result = await MainViewModel.Client.InvokeApiAsync("eventCount", HttpMethod.Post, parameters);
         // convert to an enumerable of dynamic to support foreach
