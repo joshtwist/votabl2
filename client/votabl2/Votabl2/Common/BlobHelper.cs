@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using GalaSoft.MvvmLight.Messaging;
 using Votabl2.Common;
+using System.Net;
 
 namespace Votabl2.Models
 {
@@ -29,6 +30,10 @@ namespace Votabl2.Models
 
                     using (var uploadResponse = await client.PutAsync(new Uri(targetUrl), content))
                     {
+                        if (uploadResponse.StatusCode != HttpStatusCode.Created)
+                        {
+                            throw new Exception(string.Format("Upload Failed {0}", uploadResponse.ToString()));
+                        }
                         // remove the SAS querystring from the insert result
                         return targetUrl.Substring(0, targetUrl.IndexOf('?'));
                     }
