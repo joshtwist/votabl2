@@ -20,3 +20,5 @@ git clean --force
 cd setup
 
 start -WorkingDirectory ..\client\html -ArgumentList "-p 8080" http-server
+
+xcopy .\images $HOME\Pictures\ /Y
