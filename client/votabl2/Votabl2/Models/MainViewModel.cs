@@ -40,7 +40,7 @@ namespace Votabl2.Models
 
         private async void Insert()
         {
-            var evt = new Event { Name = NewItem.Name };
+            var evt = new Event { Name = NewItem.Name, EventShareId = Guid.NewGuid().ToString() };
 
             // TODO - insert
 
