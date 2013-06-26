@@ -6,9 +6,8 @@ request.execute({
 				success : function(results) {
 					request.respond();
 					results.forEach(function(r) {
-						push.wns.sendRaw(r.channelUri, JSON.stringify(item), {
-                            success: console.log
-                        });
+						if (debounce()) { return }
+						push.wns.sendRaw(r.channelUri, JSON.stringify(item));
 					});
 				}
 			});
@@ -67,3 +66,17 @@ function signature(input) {
 	var str = crypto.createHmac('sha256', key).update(input).digest('base64');
 	return str;
 }
+
+function debounce() {
+    if (!cache.lastSend || cache.lastSend + interval < new Date().getTime()) {
+        cache.lastSend = new Date().getTime();
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+// any module will do, we're just going to attach some state
+var cache = require('request');
+var interval = 6000;
