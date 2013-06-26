@@ -19,15 +19,11 @@ namespace Votabl2.Models
     public class MainViewModel : ViewModel
     {
         public static MobileServiceClient Client;
-
-        private static MainViewModel _instance;
-
         private IMobileServiceTable<Event> _eventsTable;
 
-        static MainViewModel()
+        private static void InitializeClient()
         {
             // TODO - add client
-
 
             // TODO - activity handler
 
@@ -37,38 +33,9 @@ namespace Votabl2.Models
         private MainViewModel()
         {
             // TODO - initialize _eventsTable
-            
 
-            _insertCommand = new RelayCommand(Insert);
-            _refreshCommand = new RelayCommand(Load);
-            _chooseCommand = new RelayCommand<Event>(Choose);
 
-            _newItem = new NewItemViewModel(Insert);
-
-            BusyViewModel = BusyViewModel.Instance();
-        }
-
-        public Action<EventViewModel> NavigateAction { get; set; }
-
-        public async void Login()
-        {
-            //while (Client.CurrentUser == null)
-            {
-                try
-                {
-                    // TODO - add login
-                    
-
-                }
-                catch (Exception) { }
-            }
-        }
-
-        private void Choose(Event evt) 
-        {
-            EventViewModel mvm = new EventViewModel();
-            mvm.Event = evt;
-            NavigateAction(mvm);
+            Setup();
         }
 
         private async void Insert()
@@ -89,7 +56,48 @@ namespace Votabl2.Models
         {
             // TODO - load events, clear collection and AddRange
 
+        }
 
+        public async void Login()
+        {
+            //while (Client.CurrentUser == null)
+            {
+                try
+                {
+                    // TODO - add login
+                    Load();
+                }
+                catch { }
+            }
+        }
+
+        #region boring stuff
+
+        private static MainViewModel _instance;
+
+        static MainViewModel()
+        {
+            InitializeClient();
+        }
+
+        private void Setup()
+        {
+            _insertCommand = new RelayCommand(Insert);
+            _refreshCommand = new RelayCommand(Load);
+            _chooseCommand = new RelayCommand<Event>(Choose);
+
+            _newItem = new NewItemViewModel(Insert);
+
+            BusyViewModel = BusyViewModel.Instance();
+        }
+
+        public Action<EventViewModel> NavigateAction { get; set; }
+
+        private void Choose(Event evt)
+        {
+            EventViewModel mvm = new EventViewModel();
+            mvm.Event = evt;
+            NavigateAction(mvm);
         }
 
         private readonly ObservableCollection<Event> _events = new ObservableCollection<Event>();
@@ -166,5 +174,6 @@ namespace Votabl2.Models
 
         public BusyViewModel BusyViewModel { get; private set; }
 
+        #endregion
     }
 }
