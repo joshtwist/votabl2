@@ -65,6 +65,7 @@ namespace Votabl2.Models
                 try
                 {
                     // TODO - add login
+
                     Load();
                 }
                 catch { }
