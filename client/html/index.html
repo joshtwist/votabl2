@@ -63,7 +63,7 @@
             }
 
             function VoteController($scope, $location) {
-                var eventShareId = $location.path().substring(1);
+                var eventShareId = document.location.search.replace('?esid=', '');
                 if (!eventShareId || eventShareId.length < 10)
                 {
                     alert('invalid event id' + eventShareId);

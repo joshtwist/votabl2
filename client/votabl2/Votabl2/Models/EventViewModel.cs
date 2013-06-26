@@ -56,7 +56,7 @@ namespace Votabl2.Models
 
         public async void LoadVotes()
         {
-            // TODO - Load Votes
+            // TODO - Load Votes - 
 
         }
 
