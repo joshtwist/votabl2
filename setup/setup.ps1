@@ -1,3 +1,11 @@
+Write-Host "Enter jtwist to continue..."
+$foo = Read-Host
+if ($foo -ne "jtwist")
+{
+	Write-Host "Nope!"
+	exit
+} 
+
 $m = azure account list | where { $_.Contains("4040ae04-b877-412d-b6cf-c38e7cd8dbb0") } | measure
 
 if ($m.Count -eq 0) {
