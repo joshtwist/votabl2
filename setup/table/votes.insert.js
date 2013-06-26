@@ -6,7 +6,9 @@ request.execute({
 				success : function(results) {
 					request.respond();
 					results.forEach(function(r) {
-						push.wns.sendRaw(r.channelUri, JSON.stringify(item));
+						push.wns.sendRaw(r.channelUri, JSON.stringify(item), {
+                            success: console.log
+                        });
 					});
 				}
 			});
