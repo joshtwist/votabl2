@@ -20,10 +20,17 @@ namespace Votabl2.Models
     {
         public EventViewModel()
         {
-            //_votablsTable = MainViewModel.Client.GetTable<Votabl>();
+            _votablsTable = MainViewModel.Client.GetTable<Votabl>();
 
             // TODO Register for RawVote message
-
+            Messenger.Default.Register<RawVote>(this, vote =>
+            {
+                if (vote.EventShareId == Event.EventShareId)
+                {
+                    LoadVotes();
+                    StartPolling();
+                }
+            });
 
             Setup();
         }
@@ -31,12 +38,12 @@ namespace Votabl2.Models
         public async void Load()
         {
             // TODO - load votabls by eventShareId, clear and addrange
-            //var votabls = await _votablsTable.
-            //    Where(v => v.EventShareId == Event.EventShareId).
-            //    ToEnumerableAsync();
+            var votabls = await _votablsTable.
+                Where(v => v.EventShareId == Event.EventShareId).
+                ToEnumerableAsync();
 
-            //this.Details.Clear();
-            //this.Details.AddRange(votabls);
+            this.Details.Clear();
+            this.Details.AddRange(votabls);
         }
 
         private async void Insert()
@@ -44,10 +51,10 @@ namespace Votabl2.Models
             var votabl = new Votabl { Name = NewItem.Name, EventShareId = Event.EventShareId };
 
             // TODO - insert votabl, upload image and read back imageUrl
-            //await _votablsTable.InsertAsync(votabl);
+            await _votablsTable.InsertAsync(votabl);
 
-            //string readUrl = await BlobHelper.UploadImageToBlobStorage(NewItem.ImageFile, votabl.ImageUrl);
-            //votabl.ImageUrl = readUrl;
+            string readUrl = await BlobHelper.UploadImageToBlobStorage(NewItem.ImageFile, votabl.ImageUrl);
+            votabl.ImageUrl = readUrl;
 
             this.Details.Add(votabl);
             NewItem.Name = string.Empty;
@@ -56,7 +63,16 @@ namespace Votabl2.Models
         public async void LoadVotes()
         {
             // TODO - Load Votes - 
-
+            var parameters = new Dictionary<string, string>() { { "eventShareId", Event.EventShareId } };
+            // Post to the eventCount API
+            dynamic result = await MainViewModel.Client.InvokeApiAsync("loadVotes", HttpMethod.Post, parameters);
+            // convert to an enumerable of dynamic to support foreach
+            IEnumerable<dynamic> arr = (IEnumerable<dynamic>)result;
+            foreach (var votabl in this.Details)
+            {
+                var votes = arr.SingleOrDefault(c => c.votablId == votabl.Id);
+                votabl.Count = votes == null ? 0 : votes.total;
+            }
         }
 
         #region boring stuff

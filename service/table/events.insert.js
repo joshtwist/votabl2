@@ -9,7 +9,6 @@ var uuid = require('../shared/node_modules/uuid');
 
 function insert(item, user, request) {
     // todo - create an image URL for blob storage
-    item.eventShareId = uuid.v4();
     var imgId = uuid.v4();
     var imgSasUrl = blobs.generateUrl(imgId);
     item.imageUrl = imgSasUrl.substring(0, imgSasUrl.indexOf('?'));

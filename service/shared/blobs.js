@@ -2,9 +2,8 @@ var azure = require('azure');
 var qs = require('querystring');
 var util = require('util');
 
-var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
-
 function generateUrl(itemId) {
+	var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
 	var resource = util.format('/%s/%s', config.storage.imageContainer, itemId);
 
 	var blobService = azure.createBlobService(config.storage.accountName, config.storage.accountKey, host);
@@ -37,6 +36,30 @@ function formatDate(date){
 }
 
 exports.generateUrl = generateUrl;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var config = { 
 	storage : {

@@ -10,6 +10,7 @@ function insert(item, user, request) {
     var ct = tables.getTable("channels");
     ct.where({ installationId: item.installationId }).read({
         success: function (results) {
+            item.userId = user.userId ? user.userId : 'undefined';
             if (results.length > 0) {
                 // we already have a record for this user/installation id - if the 
                 // channel is different, update it otherwise just respond
@@ -44,5 +45,8 @@ function insert(item, user, request) {
                 console.log("Sent push:", pushResponse);
             }
         });
+
+
     }
+
 }

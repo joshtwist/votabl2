@@ -1,4 +1,4 @@
-﻿using Microsoft.WindowsAzure.MobileServices;
+using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -24,16 +24,22 @@ namespace Votabl2.Models
         private static void InitializeClient()
         {
             // TODO - add client
+            Client = new MobileServiceClient(
+                "https://votabl2.azure-mobile.net/",
+                "XGBJRuudXuNZrZRSAImnUSmCQXSyUL56", 
+                new ActivityHandler()
+            );
 
             // TODO - activity handler
 
             // TODO - client serializer settings
+            Client.SerializerSettings.CamelCasePropertyNames = true;
         }
 
         private MainViewModel()
         {
             // TODO - initialize _eventsTable
-
+            _eventsTable = Client.GetTable<Event>();
 
             Setup();
         }
@@ -41,7 +47,9 @@ namespace Votabl2.Models
         private async void Load()
         {
             // TODO - load events, clear collection and AddRange
-
+            var events = await _eventsTable.ReadAsync();
+            this.Events.Clear();
+            this.Events.AddRange(events);
         }
 
         private async void Insert()
@@ -49,11 +57,12 @@ namespace Votabl2.Models
             var evt = new Event { Name = NewItem.Name, EventShareId = Guid.NewGuid().ToString() };
 
             // TODO - insert
-
+            await _eventsTable.InsertAsync(evt);
 
             // TODO - upload image and set imageUrl on return
-  
+            string readUrl = await BlobHelper.UploadImageToBlobStorage(NewItem.ImageFile, evt.ImageUrl);
 
+                evt.ImageUrl = readUrl;
 
             Events.Add(evt);
 

@@ -54,12 +54,17 @@
 
             function loadChoices(eventShareId) {
                 // TODO invoke API
-
+                return client.invokeApi('loadChoices', {
+                    method: 'get',
+                    parameters : {
+                        eventShareId : eventShareId
+                    }
+                });
             }
 
             function insertVote(vote) {
                 // TODO - insert vote
-
+                return votesTable.insert(vote);
             }
 
             function VoteController($scope, $location) {
