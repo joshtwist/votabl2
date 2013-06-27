@@ -2,9 +2,8 @@ var azure = require('azure');
 var qs = require('querystring');
 var util = require('util');
 
-var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
-
 function generateUrl(itemId) {
+	var host = util.format('%s.blob.core.windows.net', config.storage.accountName);
 	var resource = util.format('/%s/%s', config.storage.imageContainer, itemId);
 
 	var blobService = azure.createBlobService(config.storage.accountName, config.storage.accountKey, host);
@@ -40,8 +39,8 @@ exports.generateUrl = generateUrl;
 
 var config = { 
 	storage : {
-		accountName : "azmob",
-		accountKey : "jup/1UBhKhYCAZu7zyCO6okigetuCco7OGc9ea31kU+nMImVk3Dk7GKh9xt5GMVBdYW+VYAi9z06KvOIvJhnlQ==",
+		accountName : "your account name",
+		accountKey : "your account key",
 		imageContainer : "events"
 	}
 }

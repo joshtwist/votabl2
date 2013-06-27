@@ -26,8 +26,8 @@ namespace Votabl2
     {
         // http://go.microsoft.com/fwlink/?LinkId=290986&clcid=0x409
         public static Microsoft.WindowsAzure.MobileServices.MobileServiceClient votabl2Client = new Microsoft.WindowsAzure.MobileServices.MobileServiceClient(
-        "https://votabl2.azure-mobile.net/",
-        "XGBJRuudXuNZrZRSAImnUSmCQXSyUL56");
+        "https://your service.azure-mobile.net/",
+        "your key");
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

@@ -25,8 +25,8 @@ namespace Votabl2.Models
         {
             // TODO - add client
             Client = new MobileServiceClient(
-                "https://votabl2.azure-mobile.net/",
-                "XGBJRuudXuNZrZRSAImnUSmCQXSyUL56", 
+                "https://your service.azure-mobile.net/",
+                "your car", 
                 new ActivityHandler()
             );
 
